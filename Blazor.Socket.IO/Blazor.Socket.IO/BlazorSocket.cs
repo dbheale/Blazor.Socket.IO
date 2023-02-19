@@ -1,21 +1,18 @@
-using System.Data;
-using System.Reflection;
-using System.Reflection.Metadata;
-using Microsoft.JSInterop;
-using System.Text.Json;
 using Microsoft.AspNetCore.Components;
-using System;
+using Microsoft.JSInterop;
+using System.Data;
+using System.Reflection.Metadata;
 
 namespace Blazor.Socket.IO;
 
-public class SocketIo : ComponentBase, IAsyncDisposable
+public class BlazorSocket : ComponentBase, IAsyncDisposable
 {
     private JsCallbackObjectReference? _socketRef;
 
-    [Inject] private JsCallback JsCallback { get; set; } = default!;
+    [Inject] private JsCallback? JsCallback { get; set; }
 
     [Parameter]
-    public SocketIoOptions? Options { get; set; }
+    public BlazorSocketOptions? Options { get; set; }
 
     [Parameter]
     public Dictionary<string, Action<string>>? EventHandlers { get; set; }
@@ -28,6 +25,11 @@ public class SocketIo : ComponentBase, IAsyncDisposable
     
     protected override async Task OnInitializedAsync()
     {
+        if (JsCallback is null)
+        {
+            throw new ConstraintException("You must call the `.AddBlazorSocket()` service collection extension method.");
+        }
+
         _socketRef = await JsCallback.InvokeAsync<IJSObjectReference>("blazorSocket", Url, Options);
         
         if (EventHandlers != null)

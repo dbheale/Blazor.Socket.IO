@@ -1,6 +1,6 @@
 namespace Blazor.Socket.IO;
 
-public class SocketIoOptions
+public class BlazorSocketOptions
 {
     public bool ForceNew { get; set; } = false;
     public bool Multiplex { get; set; } = true;

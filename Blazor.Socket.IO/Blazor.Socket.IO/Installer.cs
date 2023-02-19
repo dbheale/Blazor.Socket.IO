@@ -4,7 +4,7 @@ namespace Blazor.Socket.IO
 {
     public static class Installer
     {
-        public static IServiceCollection AddBlazorSocketIo(this IServiceCollection serviceProvider)
+        public static IServiceCollection AddBlazorSocket(this IServiceCollection serviceProvider)
         {
             serviceProvider.AddScoped<JsCallback>();
 
